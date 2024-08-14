@@ -41,6 +41,42 @@ async function processImage(filePath, outputPath, percentage, format) {
     console.error("Error process image:", error);
   }
 }
+async function makeImageSixteenNine(filePath) {
+  try {
+    const metadata = await sharp(filePath).metadata();
+    const width = metadata.width;
+    const height = metadata.height;
+    
+    // Calculate the target dimensions for 16:9
+    const targetRatio = 16 / 9;
+    let targetWidth, targetHeight;
+    
+    if (width / height > targetRatio) {
+      targetHeight = height;
+      targetWidth = Math.round(targetHeight * targetRatio);
+    } else {
+      targetWidth = width;
+      targetHeight = Math.round(targetWidth / targetRatio);
+    }
+
+    const outputPath = path.join(path.dirname(filePath), `16_9_${path.basename(filePath)}`);
+
+    await sharp(filePath)
+      .extract({
+        width: targetWidth,
+        height: targetHeight,
+        left: (width - targetWidth) / 2,
+        top: (height - targetHeight) / 2
+      })
+      .toFormat('jpeg')
+      .toFile(outputPath);
+
+    console.log(`16:9 image created at ${outputPath}`);
+  } catch (error) {
+    console.error('Error making image 16:9:', error);
+  }
+}
+
 async function selectAndResizeImages() {
   const { filePaths: directoryPaths } = await dialog.showOpenDialog({
     properties: ['openDirectory']
@@ -488,6 +524,21 @@ ipcMain.on('optimize-images', (event) => {
   optimizeImagesInFolder();
 });
 
+ipcMain.on('make-image-sixteen-nine', (event) => {
+  selectAndMakeImageSixteenNine();
+});
+
+async function selectAndMakeImageSixteenNine() {
+  const { filePaths } = await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif', 'webp'] }]
+  });
+
+  if (filePaths && filePaths.length > 0) {
+    const filePath = filePaths[0];
+    makeImageSixteenNine(filePath);
+  }
+}
 
 
 ipcMain.on('make-image-square-700', (event) => {

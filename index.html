@@ -8,6 +8,8 @@
   <h1>Image optimizer</h1>
   <div class="button-block">
     <h2>Resizes image(s) by an inputed %</h2>
+    <button id="makeSixteenNineButton">Make <b>16:9</b> Image</button>
+
     <button id="resizeSingleImageButton">Resize <b>Single</b> Image</button>
     <button id="resizeAllImagesButton">Resize <b>All</b> Images</button>
     <button id="resizeLargeImagesButton">Resize <b>Large</b> Images</button>
@@ -85,6 +87,9 @@
     document.getElementById("resizeImagesOver1200pxButton").addEventListener("click", () => {
       ipcRenderer.send("resize-images-over-1200px");
     });
+    document.getElementById("makeSixteenNineButton").addEventListener("click", () => {
+  ipcRenderer.send("make-image-sixteen-nine");
+});
 
     document.getElementById("optimizeImagesButton").addEventListener("click", () => {
       ipcRenderer.send("optimize-images");

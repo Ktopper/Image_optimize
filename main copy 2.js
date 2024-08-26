@@ -519,67 +519,6 @@ async function optimizeImagesInFolder() {
     });
   }
 }
-async function makeHeroImage(filePath) {
-  try {
-    const outputPath = path.join(path.dirname(filePath), `hero_${path.basename(filePath, path.extname(filePath))}.webp`);
-    
-    await sharp(filePath)
-      .resize({ width: 1400 })
-      .toFormat('webp')
-      .toFile(outputPath);
-
-    console.log(`Hero image created at ${outputPath}`);
-  } catch (error) {
-    console.error('Error making hero image:', error);
-  }
-}
-
-async function makeMediumImage(filePath) {
-  try {
-    const outputPath = path.join(path.dirname(filePath), `medium_${path.basename(filePath, path.extname(filePath))}.webp`);
-    
-    await sharp(filePath)
-      .resize({ width: 600 })
-      .toFormat('webp')
-      .toFile(outputPath);
-
-    console.log(`Medium image created at ${outputPath}`);
-  } catch (error) {
-    console.error('Error making medium image:', error);
-  }
-}
-
-async function selectAndMakeHeroImage() {
-  const { filePaths } = await dialog.showOpenDialog({
-    properties: ['openFile'],
-    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif', 'webp'] }]
-  });
-
-  if (filePaths && filePaths.length > 0) {
-    const filePath = filePaths[0];
-    makeHeroImage(filePath);
-  }
-}
-
-async function selectAndMakeMediumImage() {
-  const { filePaths } = await dialog.showOpenDialog({
-    properties: ['openFile'],
-    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif', 'webp'] }]
-  });
-
-  if (filePaths && filePaths.length > 0) {
-    const filePath = filePaths[0];
-    makeMediumImage(filePath);
-  }
-}
-
-ipcMain.on('make-hero-image', (event) => {
-  selectAndMakeHeroImage();
-});
-
-ipcMain.on('make-medium-image', (event) => {
-  selectAndMakeMediumImage();
-});
 
 ipcMain.on('optimize-images', (event) => {
   optimizeImagesInFolder();

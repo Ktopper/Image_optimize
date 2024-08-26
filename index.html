@@ -36,8 +36,20 @@
     <h2>Optimize Image Compression</h2>
     <button id="optimizeImagesButton">Optimize Compression for PNG and WebP</button>
   </div>
+  <div class="button-block">
+    <h2>Create Images for Web</h2>
+    <button id="makeHeroImageButton">Make Hero Image (1400px)</button>
+    <button id="makeMediumImageButton">Make Medium Image (600px)</button>
+  </div>
   <script>
     const { ipcRenderer } = require("electron");
+    document.getElementById("makeHeroImageButton").addEventListener("click", () => {
+    ipcRenderer.send("make-hero-image");
+  });
+
+  document.getElementById("makeMediumImageButton").addEventListener("click", () => {
+    ipcRenderer.send("make-medium-image");
+  });
 
     document.getElementById("resizeSingleImageButton").addEventListener("click", () => {
       ipcRenderer.send("resize-single-image");

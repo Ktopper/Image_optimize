@@ -27,7 +27,7 @@
   </div>
   <div class="button-block">
     <h2>Convert Images</h2>
-    <button id="convertSingleImageToWebPButton">Convert <b>Single</b> Image to WebP</button>
+    <button id="convertSingleImageToWebPButton">Convert Single Image to WebP</button>
     <button id="convertAllImagesToWebPButton">Convert <b>All</b> Images to WebP</button>
     <button id="convertImageToPNGButton">Convert <b>Single</b> Image to PNG</button>
     <button id="convertAllImagesToPNGButton">Convert <b>All</b> Images to PNG</button>
@@ -54,71 +54,73 @@
   </div>
   <script>
     const { ipcRenderer } = require("electron");
-    document.getElementById("makeHeroImageButton").addEventListener("click", () => {
-    ipcRenderer.send("make-hero-image");
-  });
-
-  document.getElementById("makeMediumImageButton").addEventListener("click", () => {
-    ipcRenderer.send("make-medium-image");
-  });
-
+  
+    // Event listeners for the buttons
+    document.getElementById("makeSixteenNineButton").addEventListener("click", () => {
+      ipcRenderer.send("make-image-sixteen-nine");
+    });
+  
     document.getElementById("resizeSingleImageButton").addEventListener("click", () => {
       ipcRenderer.send("resize-single-image");
     });
-
+  
     document.getElementById("resizeAllImagesButton").addEventListener("click", () => {
       ipcRenderer.send("resize-all-images");
     });
-
+  
     document.getElementById("resizeLargeImagesButton").addEventListener("click", () => {
       ipcRenderer.send("resize-large-images");
     });
-
+  
     document.getElementById("convertSingleImageToWebPButton").addEventListener("click", () => {
       ipcRenderer.send("convert-single-image-to-webp");
     });
-
+  
     document.getElementById("convertAllImagesToWebPButton").addEventListener("click", () => {
       ipcRenderer.send("convert-all-images-to-webp");
     });
-
+  
     document.getElementById("convertImageToPNGButton").addEventListener("click", () => {
       ipcRenderer.send("convert-image-to-png");
     });
-
+  
     document.getElementById("convertAllImagesToPNGButton").addEventListener("click", () => {
       ipcRenderer.send("convert-all-images-to-png");
     });
-
+  
     document.getElementById("resizeWebpButton").addEventListener("click", () => {
       ipcRenderer.send("resize-webp-images");
     });
-
+  
     document.getElementById("createFaviconButton").addEventListener("click", () => {
       ipcRenderer.send("create-favicon");
     });
-
+  
     document.getElementById("makeSquareButton").addEventListener("click", () => {
       ipcRenderer.send("make-image-square");
-      console.log("Make square button clicked");
     });
-
+  
     document.getElementById("makeSquare700Button").addEventListener("click", () => {
       ipcRenderer.send("make-image-square-700");
     });
-
+  
     document.getElementById("resizeImagesOver1200pxButton").addEventListener("click", () => {
       ipcRenderer.send("resize-images-over-1200px");
     });
-    document.getElementById("makeSixteenNineButton").addEventListener("click", () => {
-  ipcRenderer.send("make-image-sixteen-nine");
-});
-
+  
+    document.getElementById("makeHeroImageButton").addEventListener("click", () => {
+      ipcRenderer.send("make-hero-image");
+    });
+  
+    document.getElementById("makeMediumImageButton").addEventListener("click", () => {
+      ipcRenderer.send("make-medium-image");
+    });
+  
     document.getElementById("optimizeImagesButton").addEventListener("click", () => {
       ipcRenderer.send("optimize-images");
     });
-
-    // Add this new code at the end of the script
+  
+    // Add animation for button blocks
     document.addEventListener('DOMContentLoaded', () => {
       const buttonBlocks = document.querySelectorAll('.button-block');
       buttonBlocks.forEach((block, index) => {
@@ -128,5 +130,6 @@
       });
     });
   </script>
+  
 </body>
 </html>

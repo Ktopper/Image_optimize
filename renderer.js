@@ -11,6 +11,10 @@ document.getElementById('resizeButton').addEventListener('click', () => {
 
 document.getElementById('resizeWebpButton').addEventListener('click', () => {
   ipcRenderer.send('resize-webp-images');
+  document.getElementById('convertSingleImageToWebPButton').addEventListener('click', () => {
+    ipcRenderer.send('convert-single-image-to-webp');
+  });
+  
 });
 
 

@@ -400,6 +400,18 @@ async function selectAndConvertImageToPNG() {
     await processImage(filePath, outputPath, 100, 'png');
   }
 }
+ipcMain.on('convert-single-image-to-webp', async (event) => {
+  const { filePaths } = await dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'gif'] }]
+  });
+
+  if (filePaths && filePaths.length > 0) {
+    const filePath = filePaths[0];
+    const outputPath = path.join(path.dirname(filePath), path.basename(filePath, path.extname(filePath)) + '.webp');
+    await convertToWebPWithCompression(filePath, outputPath);
+  }
+});
 
 async function selectAndConvertAllImagesToPNG() {
   const { filePaths: directoryPaths } = await dialog.showOpenDialog({

@@ -3,6 +3,17 @@
 <head>
   <title>Image Optimizer</title>
   <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .button-block {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .button-block.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  </style>
 </head>
 <body>
   <h1>Image optimizer</h1>
@@ -105,6 +116,16 @@
 
     document.getElementById("optimizeImagesButton").addEventListener("click", () => {
       ipcRenderer.send("optimize-images");
+    });
+
+    // Add this new code at the end of the script
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttonBlocks = document.querySelectorAll('.button-block');
+      buttonBlocks.forEach((block, index) => {
+        setTimeout(() => {
+          block.classList.add('show');
+        }, index * 200); // Delay each block by 200ms
+      });
     });
   </script>
 </body>

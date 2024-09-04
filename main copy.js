@@ -353,7 +353,48 @@ async function resizeWebpImages() {
     console.error("Error resizing webp images:", error);
   }
 } 
+ipcMain.on('convert-all-images-to-png', async (event) => {
+  const { filePaths: directoryPaths } = await dialog.showOpenDialog({
+    properties: ['openDirectory'],
+  });
 
+  if (!directoryPaths || directoryPaths.length === 0) {
+    return; // Handle case where no directory was selected
+  }
+
+  for (let dirPath of directoryPaths) {
+    fs.readdir(dirPath, (err, files) => {
+      if (err) {
+        console.error('Unable to scan directory: ' + err);
+        return;
+      }
+
+      // Filter image files based on extensions
+      const imageFiles = files.filter(file => ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(file).toLowerCase()));
+
+      if (imageFiles.length === 0) {
+        console.log('No image files found in the selected directory.');
+        return;
+      }
+
+      imageFiles.forEach(async (file) => {
+        const filePath = path.join(dirPath, file);
+        const outputPath = path.join(dirPath, path.basename(file, path.extname(file)) + '.png');
+
+        try {
+          // Convert each image to PNG
+          await sharp(filePath)
+            .toFormat('png', { compressionLevel: 9 })
+            .toFile(outputPath);
+          
+          console.log(`Converted ${file} to PNG at ${outputPath}`);
+        } catch (error) {
+          console.error(`Error converting ${file} to PNG:`, error);
+        }
+      });
+    });
+  }
+});
 ipcMain.on('make-image-square-700', (event) => {
   selectAndMakeImageSquare700();
 });
